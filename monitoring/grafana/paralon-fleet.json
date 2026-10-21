@@ -229,7 +229,9 @@
                 "value": 85
               }
             ]
-          }
+          },
+          "min": 20,
+          "max": 95
         },
         "overrides": []
       },
@@ -271,7 +273,9 @@
             "lineWidth": 2,
             "fillOpacity": 8,
             "showPoints": "never"
-          }
+          },
+          "min": 0,
+          "max": 100
         },
         "overrides": []
       },
@@ -313,7 +317,8 @@
             "lineWidth": 2,
             "fillOpacity": 8,
             "showPoints": "never"
-          }
+          },
+          "min": 0
         },
         "overrides": []
       },
@@ -355,7 +360,9 @@
             "lineWidth": 2,
             "fillOpacity": 8,
             "showPoints": "never"
-          }
+          },
+          "min": 0,
+          "decimals": 1
         },
         "overrides": []
       },
