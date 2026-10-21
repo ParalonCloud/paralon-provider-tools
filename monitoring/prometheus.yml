@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 60s   # the agents report about once a minute
+rule_files:
+  - /etc/prometheus/alerts.yml
+scrape_configs:
+  - job_name: paralon
+    static_configs:
+      - targets: ["paralon-exporter:9817"]

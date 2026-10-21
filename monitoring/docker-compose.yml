@@ -1,0 +1,31 @@
+# Paralon fleet monitoring: exporter + Prometheus + Grafana.
+# Usage: PARALON_API_KEY=prlc_... docker compose up -d, then open http://localhost:3000
+services:
+  paralon-exporter:
+    image: python:3.12-slim
+    command: python /app/paralon_exporter.py
+    environment:
+      PARALON_API_KEY: ${PARALON_API_KEY:?set PARALON_API_KEY to a key with the My nodes permission}
+    volumes:
+      - ./paralon_exporter.py:/app/paralon_exporter.py:ro
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/paralon-fleet.json:/var/lib/grafana/dashboards/paralon-fleet.json:ro
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

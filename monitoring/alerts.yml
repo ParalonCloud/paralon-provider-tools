@@ -1,0 +1,27 @@
+groups:
+  - name: paralon-fleet
+    rules:
+      - alert: GPUHot
+        expr: paralon_gpu_temperature_celsius >= 85
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "{{ $labels.name }} GPU {{ $labels.gpu }} at {{ $value }} °C for 5 minutes"
+      - alert: NodeOffline
+        expr: paralon_node_online == 0 and on(node) paralon_node_available == 1
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "{{ $labels.name }} is on the market but its agent has been offline for 10 minutes"
+      - alert: NodeNotRentable
+        expr: (paralon_node_state{state="not_verified"} == 1) or (paralon_node_state{state="not_ready"} == 1)
+        for: 30m
+        labels: { severity: info }
+        annotations:
+          summary: "{{ $labels.name }} is {{ $labels.state }} for 30 minutes"
+      - alert: ParalonAPIDown
+        expr: paralon_api_up == 0
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "The exporter cannot reach the Paralon API"
